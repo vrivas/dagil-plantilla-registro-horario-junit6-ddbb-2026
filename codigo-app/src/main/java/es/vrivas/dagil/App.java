@@ -70,7 +70,7 @@ public final class App {
         String idPersona = System.console().readLine();
         ContenedorRegistroHorario listaOrdenada = registrosHorarios.getOrdenadosFechaHora();
         boolean hayAlguno = false;
-        for (int i = 0; i < listaOrdenada.tamanio(); ++i) {
+        for (int i = 0; i < listaOrdenada.getNumObjetosContenidos(); ++i) {
             RegistroHorario registro = (RegistroHorario) listaOrdenada.getPorPosicion(i);
             if (registro.getIdPersona() == Integer.parseInt(idPersona)) {
                 hayAlguno = true;

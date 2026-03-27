@@ -1,10 +1,10 @@
-package es.vrivas.dagil;
+package es.vrivas.dagil.Plantillas;
 
 /**
  * Clase Contenido.
  * Representa un contenido con un identificador y una descripción.
  */
-public class Contenido {
+public class ContenidoPlantilla {
     /// Identificador.
     private int id;
 
@@ -14,7 +14,7 @@ public class Contenido {
     /**
      * Constructor.
      */
-    public Contenido() {
+    public ContenidoPlantilla() {
         this.id = 0;
         this.descripcion = "";
     }
@@ -41,7 +41,7 @@ public class Contenido {
      * @exception IllegalArgumentException Si el valor es negativo.
      * @return La propia instancia de Contenido.
      */
-    public Contenido setId(final int valor) {
+    public ContenidoPlantilla setId(final int valor) throws IllegalArgumentException {
         if (valor < 0) {
             throw new IllegalArgumentException("El id del contenido no puede ser negativo");
         }
@@ -55,7 +55,7 @@ public class Contenido {
      * @exception IllegalArgumentException Si la descripción es nula o vacía.
      * @return La propia instancia de Contenido.
      */
-    public Contenido setDescripcion(final String valor) {
+    public ContenidoPlantilla setDescripcion(final String valor) throws IllegalArgumentException {
         if (valor == null || valor.isEmpty()) {
             throw new IllegalArgumentException("la descripción no puede ser vacía");
         }

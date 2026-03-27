@@ -13,7 +13,7 @@ public class ContenedorRegistroHorarioTest {
     @Test
     public void testConstructor() {
         ContenedorRegistroHorario contenedor = new ContenedorRegistroHorario();
-        assertEquals(0, contenedor.tamanio());
+        assertEquals(0, contenedor.getNumObjetosContenidos());
     }
 
     @Test
@@ -33,7 +33,7 @@ public class ContenedorRegistroHorarioTest {
         RegistroHorario registro = new RegistroHorario(1, 101,
                 LocalDateTime.parse(fechaHora), tipoEvento);
         contenedor.add(registro);
-        assertEquals(1, contenedor.tamanio());
+        assertEquals(1, contenedor.getNumObjetosContenidos());
         assertSame(registro, contenedor.getPorPosicion(0));
 
         // Compruebo la excepción si se intenta añadir un objeto que ya está en el
@@ -91,7 +91,7 @@ public class ContenedorRegistroHorarioTest {
         try { // uso try porque getIdPorPersona puede lanzar una excepción, pero no para
               // probar la excepción
             ContenedorRegistroHorario contenedor2 = contenedor.getPorIdPersona(1);
-            assertEquals(2, contenedor2.tamanio());
+            assertEquals(2, contenedor2.getNumObjetosContenidos());
             assertSame(registro1, contenedor2.getPorPosicion(0));
             assertSame(registro3, contenedor2.getPorPosicion(1));
 
@@ -103,7 +103,7 @@ public class ContenedorRegistroHorarioTest {
         try { // uso try porque getIdPorPersona puede lanzar una excepción, pero no para
               // probar la excepción
             ContenedorRegistroHorario contenedor3 = contenedor.getPorIdPersona(2);
-            assertEquals(1, contenedor3.tamanio());
+            assertEquals(1, contenedor3.getNumObjetosContenidos());
             assertSame(registro2, contenedor3.getPorPosicion(0));
         } catch (IllegalArgumentException e) {
             System.err.println("testGetPorIdPersona: Excepción capturada: " + e.getMessage());
@@ -132,7 +132,7 @@ public class ContenedorRegistroHorarioTest {
         contenedor.add(registro4);
 
         ContenedorRegistroHorario contenedorOrdenado = contenedor.getOrdenadosFechaHora();
-        assertEquals(4, contenedorOrdenado.tamanio());
+        assertEquals(4, contenedorOrdenado.getNumObjetosContenidos());
         assertSame(registro4, contenedorOrdenado.getPorPosicion(0));
         assertSame(registro1, contenedorOrdenado.getPorPosicion(1));
         assertSame(registro3, contenedorOrdenado.getPorPosicion(2));
@@ -178,7 +178,7 @@ public class ContenedorRegistroHorarioTest {
         try {
             ContenedorRegistroHorario contenedor = new ContenedorRegistroHorario();
             contenedor.leerDesdeBBDD();
-            assert contenedor.tamanio() > 0
+            assert contenedor.getNumObjetosContenidos() > 0
                     : "El contenedor debería tener registros después de leer desde la base de datos";
         } catch (SQLException e) {
             System.err.println(

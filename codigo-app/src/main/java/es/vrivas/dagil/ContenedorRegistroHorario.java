@@ -1,6 +1,8 @@
 package es.vrivas.dagil;
 
 import es.vrivas.dagil.App.CONF;
+import es.vrivas.dagil.Interfaces.ContenedorInterface;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -12,7 +14,7 @@ import java.util.ArrayList;
 /**
  * Contenedor de objetos de tipo RegistroHorario.
  */
-public class ContenedorRegistroHorario {
+public class ContenedorRegistroHorario implements ContenedorInterface<RegistroHorario> {
 
     /// ArrayList con el conjunto de objetos contenidos
     private ArrayList<RegistroHorario> objetosContenidos;
@@ -28,7 +30,7 @@ public class ContenedorRegistroHorario {
      * Devuelve el número de objetos que hay en el contenedor.
      * @return Número de objetos contenidos en el contenedor.
      */
-    public int tamanio() {
+    public int getNumObjetosContenidos() {
         return objetosContenidos.size();
     }
 
@@ -99,6 +101,24 @@ public class ContenedorRegistroHorario {
                     "ContenedorRegistroHorario:add: El registro horario ya está en el contenedor");
         }
         objetosContenidos.add(objeto);
+        return this;
+    }
+
+    /**
+    * Elimina un objeto del contenedor.
+    * @param objeto Objeto a eliminar del contenedor.
+    * @exception IllegalArgumentException Si el objeto no está en el contenedor.
+    * @exception IllegalArgumentException Si el objeto es NULL.
+    * @return La propia instancia de Contenedor.
+    */
+    public ContenedorRegistroHorario remove(final RegistroHorario objeto) throws IllegalArgumentException {
+        if (objeto == null) {
+            throw new IllegalArgumentException("Contenedor: remove: El objeto que se intenta eliminar es NULL");
+        }
+        if (!objetosContenidos.contains(objeto)) {
+            throw new IllegalArgumentException("Contenedor: remove: El objeto no está en el contenedor");
+        }
+        objetosContenidos.remove(objeto);
         return this;
     }
 

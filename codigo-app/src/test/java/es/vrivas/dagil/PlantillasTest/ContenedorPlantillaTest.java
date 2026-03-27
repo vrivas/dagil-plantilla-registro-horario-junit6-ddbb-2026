@@ -1,17 +1,22 @@
-package es.vrivas.dagil;
+package es.vrivas.dagil.PlantillasTest;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import es.vrivas.dagil.Interfaces.ContenedorInterface;
+import es.vrivas.dagil.Plantillas.ContenedorPlantilla;
+import es.vrivas.dagil.Plantillas.ContenidoPlantilla;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * Clase de test para la clase Contenedor.
  */
-public class ContenedorTest {
+public class ContenedorPlantillaTest {
     /**
      * Inicialización de los tests.
      */
@@ -30,9 +35,8 @@ public class ContenedorTest {
     @Test
     public void add_excepcion_si_objeto_nulo() {
         // Salta exepción si se intenta añadir un objeto nulo
-        Contenedor contenedor = new Contenedor();
+        ContenedorPlantilla contenedor = new ContenedorPlantilla();
         try {
-            contenedor.add(null);
             contenedor.add(null);
             fail();
         } catch (IllegalArgumentException e) {
@@ -47,8 +51,8 @@ public class ContenedorTest {
     @Test
     public void add_excepcion_si_objeto_ya_existe() {
         try {
-            Contenedor contenedor = new Contenedor();
-            Contenido objeto = new Contenido()
+            ContenedorPlantilla contenedor = new ContenedorPlantilla();
+            ContenidoPlantilla objeto = new ContenidoPlantilla()
                     .setDescripcion("add_excepcion_si_objeto_ya_existe")
                     .setId(1);
             contenedor.add(objeto);
@@ -66,11 +70,11 @@ public class ContenedorTest {
     @Test
     public void add_excepcion_si_objeto_tiene_mismo_id_que_otro() {
         try {
-            Contenedor contenedor = new Contenedor();
+            ContenedorPlantilla contenedor = new ContenedorPlantilla();
             contenedor
-                    .add(new Contenido().setId(1).setDescripcion("Objeto 1"))
+                    .add(new ContenidoPlantilla().setId(1).setDescripcion("Objeto 1"))
                     // Intento añadir un nuevo objeto con el mismo id
-                    .add(new Contenido().setId(1).setDescripcion("Objeto 2"));
+                    .add(new ContenidoPlantilla().setId(1).setDescripcion("Objeto 2"));
             fail();
         } catch (IllegalArgumentException e) {
             System.err.println("Excepción lanzada: " + e.getMessage() + " para objeto con id igual que otro.");
@@ -78,13 +82,13 @@ public class ContenedorTest {
     }
 
     /**
-     * El método add devuelve el mismo objeto.
+     * El método add devuelve el mismo objeto contenedor.
      */
     @Test
     public void add_devuelve_mismo_objeto() {
         // El método debe devolver el mismo objeto
-        Contenedor contenedor = new Contenedor();
-        Contenido objeto = new Contenido()
+        ContenedorPlantilla contenedor = new ContenedorPlantilla();
+        ContenidoPlantilla objeto = new ContenidoPlantilla()
                 .setDescripcion("Descripción en add_devuelve_mismo_objeto")
                 .setId(1);
         assertSame(contenedor, contenedor.add(objeto));
@@ -97,25 +101,96 @@ public class ContenedorTest {
     @Test
     public void add_inserta_objeto() {
         // El objeto se ha añadido al contenedor
-        Contenido objeto = new Contenido()
+        ContenidoPlantilla objeto = new ContenidoPlantilla()
                 .setDescripcion("Descripción en add_inserta_objeto")
                 .setId(1);
-        Contenedor contenedor = new Contenedor()
+        ContenedorPlantilla contenedor = new ContenedorPlantilla()
                 .add(objeto);
-        assert contenedor.getPorId(1) != null;
+        assertTrue(contenedor.getPorId(1) != null);
         assertSame(contenedor.getPorId(1), objeto);
+    }
+
+    // ---------------------------------------------------------------
+    // Tests para el método remove
+    // ---------------------------------------------------------------
+
+    /**
+     * Excepción si se intenta eliminar un objeto nulo.
+     */
+    @Test
+    public void remove_excepcion_si_objeto_nulo() {
+        // Salta exepción si se intenta añadir un objeto nulo
+        ContenedorPlantilla contenedor = new ContenedorPlantilla();
+        try {
+            contenedor.remove(null);
+            contenedor.add(null);
+            fail();
+        } catch (IllegalArgumentException e) {
+            System.err.println("Excepción lanzada: " + e.getMessage() + " para objeto nulo.");
+        }
+
+    }
+
+    /**
+     * Excepción si se intenta añadir un objeto que ya existe.
+     */
+    @Test
+    public void remove_excepcion_si_objeto_no_existe() {
+        try {
+            ContenedorPlantilla contenedor = new ContenedorPlantilla();
+            ContenidoPlantilla objeto = new ContenidoPlantilla()
+                    .setDescripcion("remove_excepcion_si_objeto_no_existe")
+                    .setId(1);
+            contenedor.remove(objeto);
+            fail();
+        } catch (IllegalArgumentException e) {
+            System.err.println("Excepción lanzada: " + e.getMessage() + " para objeto que no existía.");
+        }
+    }
+
+    /**
+     * El método remove devuelve el mismo objeto contenedor.
+     */
+    @Test
+    public void remove_devuelve_mismo_objeto() {
+        // El método debe devolver el mismo objeto
+        ContenedorPlantilla contenedor = new ContenedorPlantilla();
+        ContenidoPlantilla objeto = new ContenidoPlantilla()
+                .setDescripcion("Descripción en remove_devuelve_mismo_objeto")
+                .setId(1);
+        contenedor.add(objeto);
+        assertSame(contenedor, contenedor.remove(objeto));
+    }
+
+    /**
+     * El método remove elimina un objeto.
+     */
+    @Test
+    public void remove_elimina_objeto() {
+        // El objeto se ha añadido al contenedor
+        ContenidoPlantilla objeto = new ContenidoPlantilla()
+                .setDescripcion("Descripción en remove_elimina_objeto")
+                .setId(1);
+        ContenedorPlantilla contenedor = new ContenedorPlantilla()
+                .add(objeto);
+        // Primero compruebo que lo ha añadido.
+        assertSame(contenedor.getPorId(1), objeto);
+        // Ahora compruebo que lo ha borrado
+        contenedor.remove(objeto);
+        assertTrue(contenedor.getPorId(objeto.getId()) == null);
     }
 
     // ---------------------------------------------------------------
     // Tests para el método getNumObjetosContenidos
     // ---------------------------------------------------------------
+
     /**
      * Un contenedor vacío devuelve 0 objetos contenidos.
      */
     @Test
     public void getNumObjetosContenidos_contenedor_vacio() {
         // Devuelve 0 si no hay objetos en el contenedor
-        assert new Contenedor().getNumObjetosContenidos() == 0;
+        assert new ContenedorPlantilla().getNumObjetosContenidos() == 0;
     }
 
     /**
@@ -124,10 +199,10 @@ public class ContenedorTest {
     @Test
     public void getNumObjetosContenidos_contenedor_no_vacio() {
         // Creo un contenedor, le añado un contenido y compruebo que el número de objetos es 1
-        Contenido objeto = new Contenido()
+        ContenidoPlantilla objeto = new ContenidoPlantilla()
                 .setDescripcion("Descripción en add_inserta_objeto")
                 .setId(1);
-        Contenedor contenedor = new Contenedor()
+        ContenedorPlantilla contenedor = new ContenedorPlantilla()
                 .add(objeto);
         assert contenedor.getNumObjetosContenidos() == 1;
     }
@@ -135,6 +210,7 @@ public class ContenedorTest {
     // ---------------------------------------------------------------
     // Tests para el método getPorPosicion
     // ---------------------------------------------------------------
+
     /**
      * Excepción si la posición es negativa.
      */
@@ -143,12 +219,11 @@ public class ContenedorTest {
         // Salta excepción si la posición no es válida
         // Prueba para posiciones menores que 0
         try {
-            new Contenedor().getPorPosicion(-1);
+            new ContenedorPlantilla().getPorPosicion(-1);
             fail();
         } catch (IllegalArgumentException e) {
             System.err.println("Excepción lanzada: " + e.getMessage() + " para posición -1.");
         }
-
     }
 
     /**
@@ -157,13 +232,13 @@ public class ContenedorTest {
     @Test
     public void getPorPosicion_excepcion_posicion_superior_existentes() {
         try {
-            new Contenedor().getPorPosicion(0);
+            new ContenedorPlantilla().getPorPosicion(0);
             fail();
         } catch (IllegalArgumentException e) {
             System.err.println("Excepción lanzada: " + e.getMessage() + " para posición 0.");
         }
         try {
-            new Contenedor().getPorPosicion(1);
+            new ContenedorPlantilla().getPorPosicion(1);
             fail();
         } catch (IllegalArgumentException e) {
             System.err.println("Excepción lanzada: " + e.getMessage() + " para posición 1.");
@@ -175,13 +250,13 @@ public class ContenedorTest {
      */
     @Test
     public void getPorPosicion_valores_limite() {
-        Contenido objeto0 = new Contenido()
+        ContenidoPlantilla objeto0 = new ContenidoPlantilla()
                 .setDescripcion("Descripción en testGetPorPosicion para objeto0")
                 .setId(0);
-        Contenido objeto1 = new Contenido()
+        ContenidoPlantilla objeto1 = new ContenidoPlantilla()
                 .setDescripcion("Descripción en testGetPorPosicion para objeto1")
                 .setId(1);
-        Contenedor contenedor = new Contenedor()
+        ContenedorPlantilla contenedor = new ContenedorPlantilla()
                 .add(objeto0)
                 .add(objeto1);
         assert contenedor.getPorPosicion(0) != null;
@@ -200,7 +275,7 @@ public class ContenedorTest {
      */
     @Test
     public void getPorId_contenedor_vacio() {
-        assert new Contenedor().getPorId(1) == null;
+        assert new ContenedorPlantilla().getPorId(1) == null;
     }
 
     /**
@@ -209,10 +284,10 @@ public class ContenedorTest {
     @Test
     public void getPorId_contenedor_con_elementos() {
         // Devuelve el objeto si está en el contenedor
-        Contenido objeto = new Contenido()
+        ContenidoPlantilla objeto = new ContenidoPlantilla()
                 .setDescripcion("Descripción en testGetPorId")
                 .setId(1);
-        Contenedor contenedor = new Contenedor().add(objeto);
+        ContenedorPlantilla contenedor = new ContenedorPlantilla().add(objeto);
         assert contenedor.getPorId(1) != null;
         assertSame(contenedor.getPorId(1), objeto);
     }
@@ -226,7 +301,7 @@ public class ContenedorTest {
      */
     @Test
     public void toString_contenedor_vacio() {
-        assertEquals("[]", new Contenedor().toString());
+        assertEquals("[]", new ContenedorPlantilla().toString());
     }
 
     /**
@@ -234,15 +309,15 @@ public class ContenedorTest {
      */
     @Test
     public void toString_contenedor_no_vacio() {
-        Contenedor contenedor = new Contenedor();
-        Contenido objeto1 = new Contenido()
+        ContenedorPlantilla contenedor = new ContenedorPlantilla();
+        ContenidoPlantilla objeto1 = new ContenidoPlantilla()
                 .setDescripcion("Descripción en toString_contenedor_no_vacio para objeto1")
                 .setId(1);
         contenedor.add(objeto1);
         // Para un solo objeto
         assertEquals("[\n{id: 1, descripcion: 'Descripción en toString_contenedor_no_vacio para objeto1'},\n]",
                 contenedor.toString());
-        Contenido objeto2 = new Contenido()
+        ContenidoPlantilla objeto2 = new ContenidoPlantilla()
                 .setDescripcion("Descripción en toString_contenedor_no_vacio para objeto2")
                 .setId(2);
         contenedor.add(objeto2);

@@ -1,21 +1,23 @@
-package es.vrivas.dagil;
+package es.vrivas.dagil.Plantillas;
 
 import java.util.ArrayList;
+
+import es.vrivas.dagil.Interfaces.ContenedorInterface;
 
 /**
  * Clase Contenedor.
  * Representa un contenedor de objetos de la clase Contenido.
  */
-public class Contenedor {
+public class ContenedorPlantilla implements ContenedorInterface<ContenidoPlantilla> {
 
     /// ArrayList con el conjunto de objetos contenidos.
-    private ArrayList<Contenido> objetosContenidos;
+    private ArrayList<ContenidoPlantilla> objetosContenidos;
 
     /**
      * Constructor.
      */
-    public Contenedor() {
-        objetosContenidos = new ArrayList<Contenido>();
+    public ContenedorPlantilla() {
+        objetosContenidos = new ArrayList<ContenidoPlantilla>();
     }
 
     /**
@@ -32,7 +34,7 @@ public class Contenedor {
      * @return El objeto que hay en la posición indicada.
      * @exception IllegalArgumentException Si la posición no es válida.
      */
-    public Contenido getPorPosicion(final int posicion) {
+    public ContenidoPlantilla getPorPosicion(final int posicion) throws IllegalArgumentException {
         if (posicion < 0 || posicion >= objetosContenidos.size()) {
             throw new IllegalArgumentException(
                     "La posición debe estar entre 0 y " + (objetosContenidos.size() - 1));
@@ -45,8 +47,8 @@ public class Contenedor {
      * @param id Id del objeto a devolver.
      * @return El objeto que tiene el id indicado o null si no existe.
     */
-    public Contenido getPorId(final int id) {
-        Contenido objeto = null;
+    public ContenidoPlantilla getPorId(final int id) {
+        ContenidoPlantilla objeto = null;
         for (int i = 0; objeto == null && i < objetosContenidos.size(); ++i) {
             if (objetosContenidos.get(i).getId() == id) {
                 objeto = objetosContenidos.get(i);
@@ -76,7 +78,7 @@ public class Contenedor {
      * @exception IllegalArgumentException Si el objeto es NULL.
      * @return La propia instancia de Contenedor.
      */
-    public Contenedor add(final Contenido objeto) {
+    public ContenedorPlantilla add(final ContenidoPlantilla objeto) throws IllegalArgumentException {
         if (objeto == null) {
             throw new IllegalArgumentException("El objeto que se intenta añadir es NULL");
         }
@@ -87,6 +89,24 @@ public class Contenedor {
             throw new IllegalArgumentException("Ya hay un objeto con el mismo id en el contenedor");
         }
         objetosContenidos.add(objeto);
+        return this;
+    }
+
+    /**
+     * Elimina un objeto del contenedor.
+     * @param objeto Objeto a eliminar del contenedor.
+     * @exception IllegalArgumentException Si el objeto no está en el contenedor.
+     * @exception IllegalArgumentException Si el objeto es NULL.
+     * @return La propia instancia de Contenedor.
+     */
+    public ContenedorPlantilla remove(final ContenidoPlantilla objeto) throws IllegalArgumentException {
+        if (objeto == null) {
+            throw new IllegalArgumentException("Contenedor: remove: El objeto que se intenta eliminar es NULL");
+        }
+        if (!objetosContenidos.contains(objeto)) {
+            throw new IllegalArgumentException("Contenedor: remove: El objeto no está en el contenedor");
+        }
+        objetosContenidos.remove(objeto);
         return this;
     }
 }
