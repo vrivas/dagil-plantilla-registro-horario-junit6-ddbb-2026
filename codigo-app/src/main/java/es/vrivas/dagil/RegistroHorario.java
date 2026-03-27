@@ -12,24 +12,31 @@ public class RegistroHorario {
     /// idEmpresa.
     private int idEmpresa;
 
-    /// fecha y hora de entrada como tipo LocalDateTime.
-    private LocalDateTime entrada;
+    /// fecha y hora del evento como tipo LocalDateTime.
+    private LocalDateTime fechaHora;
 
-    /// fecha y hora de salida como tipo LocalDateTime.
-    private LocalDateTime salida;
+    /// Tipo del evento como String.
+    String tipoEvento;
+
+    /// Constantes
+    final String TIPO_EVENTO_ENTRADA = "ENTRADA";
+    final String TIPO_EVENTO_SALIDA = "SALIDA";
 
     /**
     * Constructor parametrizado con fechas.
     */
-    public RegistroHorario(int idPersona, int idEmpresa, LocalDateTime entrada, LocalDateTime salida) {
+    public RegistroHorario(int idPersona,
+            int idEmpresa,
+            LocalDateTime fechaHora,
+            String tipoEvento) {
         try {
             this.setIdPersona(idPersona);
             this.setIdEmpresa(idEmpresa);
-            this.setEntrada(entrada);
-            this.setSalida(salida);
+            this.setFechaHora(fechaHora);
+            this.setTipoEvento(tipoEvento);
         } catch (IllegalArgumentException e) {
             throw new IllegalArgumentException("Error en parámetos de llamada a constructor Registro Horario: "
-                + e.getMessage());
+                    + e.getMessage());
         }
     }
 
@@ -78,52 +85,53 @@ public class RegistroHorario {
     }
 
     /**
-     * Devuelve el valor de fechaHora_entrada_date.
+     * Devuelve el valor de fechaHora.
      */
-    public LocalDateTime getEntrada() {
-        return entrada;
+    public LocalDateTime getFechaHora() {
+        return fechaHora;
     }
 
     /**
-     * Devuelve el valor de fechaHora_salida_date.
+     * Devuelve el valor de tipoEvento.
      */
-    public LocalDateTime getSalida() {
-        return salida;
+    public String getTipoEvento() {
+        return tipoEvento;
     }
 
     /**
      * Establece el valor de la fecha y hora de entrada.
      * @param fechaHora Valor de la fecha y hora de entrada
      * @exception IllegalArgumentException Si la fecha y hora de entrada es null
-     * @exception IllegalArgumentException Si la fecha es posterior a la fecha de salida
      * @return La propia instancia de RegistroHorario
      */
-    public RegistroHorario setEntrada(final LocalDateTime fechaHora) {
+    public RegistroHorario setFechaHora(final LocalDateTime fechaHora) {
         if (fechaHora == null) {
-            throw new IllegalArgumentException("La fecha y hora de entrada no puede ser null");
+            throw new IllegalArgumentException("La fecha y hora no puede ser null");
         }
-        if (this.salida != null && fechaHora.isAfter(this.salida)) {
-            throw new IllegalArgumentException("La entrada no puede ser posterior a la salida");
-        }
-        this.entrada = fechaHora;
+        this.fechaHora = fechaHora;
         return this;
     }
 
     /**
-     * Establece el valor de la fecha y hora de salida.
-     * @param fechaHora Valor de la fecha y hora de salida
-     * @exception IllegalArgumentException Si la fecha y hora de salida es null
-     * @exception IllegalArgumentException Si la fecha es anterior a la fecha de entrada
+     * Establece el tipo de evento.
+     * @param tipoEvento Tipo del evento
+     * @exception IllegalArgumentException Si la fecha y hora de entrada es null
+     * @exception IllegalArgumentException Si la fecha es posterior a la fecha de salida
      * @return La propia instancia de RegistroHorario
      */
-    public RegistroHorario setSalida(final LocalDateTime fechaHora) {
-        if (fechaHora == null) {
-            throw new IllegalArgumentException("La fecha y hora de salida no puede ser null");
+    public RegistroHorario setTipoEvento(final String tipoEvento) {
+        if (tipoEvento == null) {
+            throw new IllegalArgumentException("RegistroHorario:setTipoEvento: El tipo de evento no puede ser null");
         }
-        if (this.entrada != null && fechaHora.isBefore(this.entrada)) {
-            throw new IllegalArgumentException("La salida no puede ser anterior a la entrada");
+        if (!tipoEvento.equals(TIPO_EVENTO_ENTRADA) &&
+                !tipoEvento.equals(TIPO_EVENTO_SALIDA)
+
+        ) {
+            throw new IllegalArgumentException("RegistroHorario:setTipoEvento: el tipo de evento debe ser "
+                    + TIPO_EVENTO_ENTRADA + " o " + TIPO_EVENTO_SALIDA +
+                    " Y ES " + tipoEvento);
         }
-        this.salida = fechaHora;
+        this.tipoEvento = tipoEvento;
         return this;
     }
 
@@ -133,18 +141,18 @@ public class RegistroHorario {
      */
     public final String toString() {
         return "{idPersona: " + idPersona
-            + ", idEmpresa: " + idEmpresa
-            + ", entrada: \"" + entrada + "\""
-            + ", salida: \"" + salida + "\""
-            + "}";
+                + ", idEmpresa: " + idEmpresa
+                + ", fechaHora: \"" + fechaHora + "\""
+                + ", tipoEvento: \"" + tipoEvento + "\""
+                + "}";
     }
 
     /**
-     * Compara dos registros horarios por la fecha y hora de entrada como LocalDateTime.
+     * Compara dos registros horarios por la fecha como LocalDateTime.
      * @param r2 RegistroHorario con el que comparar
      * @return -1, si este registro es anterior; 0 si son iguales; y 1, si es posterior.
      */
-    public int comparaEntrada(final RegistroHorario r2) {
-        return this.entrada.compareTo(r2.entrada);
+    public int comparaFechaYHora(final RegistroHorario r2) {
+        return this.fechaHora.compareTo(r2.fechaHora);
     }
 }

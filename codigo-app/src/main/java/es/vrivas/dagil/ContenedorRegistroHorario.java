@@ -41,7 +41,8 @@ public class ContenedorRegistroHorario {
     public RegistroHorario getPorPosicion(final int posicion) {
         if (posicion < 0 || posicion >= objetosContenidos.size()) {
             throw new IllegalArgumentException(
-                    "La posición debe estar entre 0 y " + (objetosContenidos.size() - 1));
+                    "ContenedorRegistroHorario:getPorPosicion: La posición debe estar entre 0 y " +
+                            (objetosContenidos.size() - 1));
         }
         return objetosContenidos.get(posicion);
     }
@@ -59,8 +60,9 @@ public class ContenedorRegistroHorario {
                     toReturn.add(objetosContenidos.get(i));
                 } catch (IllegalArgumentException e) {
                     // No se añade el objeto al contenedor
-                    throw new IllegalArgumentException("Error al añadir registro horario al conjunto de una persona: "
-                            + e.getMessage());
+                    throw new IllegalArgumentException(
+                            "ContenedorRegistroHorario: getPorIdPersona: Error al añadir registro horario al conjunto de una persona: "
+                                    + e.getMessage());
                 }
             }
         }
@@ -89,23 +91,25 @@ public class ContenedorRegistroHorario {
      */
     public ContenedorRegistroHorario add(final RegistroHorario objeto) {
         if (objeto == null) {
-            throw new IllegalArgumentException("El registro horario que se intenta añadir es NULL");
+            throw new IllegalArgumentException(
+                    "ContenedorRegistroHorario:add: El registro horario que se intenta añadir es NULL");
         }
         if (objetosContenidos.contains(objeto)) {
-            throw new IllegalArgumentException("El registro horario ya está en el contenedor");
+            throw new IllegalArgumentException(
+                    "ContenedorRegistroHorario:add: El registro horario ya está en el contenedor");
         }
         objetosContenidos.add(objeto);
         return this;
     }
 
     /**
-     * Devuelve un contenedor con el conjunto de objetos que hay ordenados cronológicamente por fecha de entrada.
-     * @return El conjunto de objetos ordenados cronológicamente por fecha de entrada.
+     * Devuelve un contenedor con el conjunto de objetos que hay ordenados cronológicamente por fecha y hora.
+     * @return El conjunto de objetos ordenados cronológicamente por fecha y hora.
      */
     public ContenedorRegistroHorario getOrdenadosEntrada() {
         ContenedorRegistroHorario toReturn = new ContenedorRegistroHorario();
         toReturn.objetosContenidos.addAll(objetosContenidos);
-        toReturn.objetosContenidos.sort((r1, r2) -> r1.comparaEntrada(r2));
+        toReturn.objetosContenidos.sort((r1, r2) -> r1.comparaFechaYHora(r2));
         return toReturn;
     }
 
@@ -134,14 +138,13 @@ public class ContenedorRegistroHorario {
             // Ir procesando los distintos registros que devuelve la consulta
             while (resultado.next()) {
                 // Retrieve data from the result set
-                int laPersona = resultado.getInt("idPersona");
-                int laEmpresa = resultado.getInt("idEmpresa");
-                // Para las fechas, tenemos que establecer la fecha y la hora por separado
-                LocalDateTime laEntrada = resultado.getDate("entrada").toLocalDate()
-                        .atTime(resultado.getTime("entrada").toLocalTime());
-                LocalDateTime laSalida = resultado.getDate("salida").toLocalDate()
-                        .atTime(resultado.getTime("salida").toLocalTime());
-                objetosContenidos.add(new RegistroHorario(laPersona, laEmpresa, laEntrada, laSalida));
+                int laPersona = resultado.getInt("id_persona");
+                int laEmpresa = resultado.getInt("id_empresa");
+                // Para la fecha, tenemos que establecer la fecha y la hora por separado
+                LocalDateTime laFechaHora = resultado.getDate("fecha_hora").toLocalDate()
+                        .atTime(resultado.getTime("fecha_hora").toLocalTime());
+                String elTipoEvento = resultado.getString("tipo_evento");
+                objetosContenidos.add(new RegistroHorario(laPersona, laEmpresa, laFechaHora, elTipoEvento));
             }
             // Finalmente, cerrar la conexión junto con el resto de recursos utilizados
             resultado.close();
@@ -149,7 +152,7 @@ public class ContenedorRegistroHorario {
             conexion.close();
         } catch (ClassNotFoundException | SQLException e) {
             throw new SQLException(
-                    "ContenedorRegistriHorario:leerDesdeBBDD: Error al acceder a la base de datos: " + e.getMessage());
+                    "ContenedorRegistroHorario:leerDesdeBBDD: Error al acceder a la base de datos: " + e.getMessage());
         }
     }
 }
