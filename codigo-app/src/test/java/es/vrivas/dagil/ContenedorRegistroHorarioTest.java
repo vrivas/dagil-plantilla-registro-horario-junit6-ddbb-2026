@@ -28,10 +28,10 @@ public class ContenedorRegistroHorarioTest {
         }
 
         ContenedorRegistroHorario contenedor = new ContenedorRegistroHorario();
-        String entrada = "2020-03-04T05:06:00";
-        String salida = "2027-08-09T10:11:00";
+        String fechaHora = "2020-03-04T05:06:00";
+        String tipoEvento = RegistroHorario.TIPO_EVENTO_ENTRADA;
         RegistroHorario registro = new RegistroHorario(1, 101,
-                LocalDateTime.parse(entrada), LocalDateTime.parse(salida));
+                LocalDateTime.parse(fechaHora), tipoEvento);
         contenedor.add(registro);
         assertEquals(1, contenedor.tamanio());
         assertSame(registro, contenedor.getPorPosicion(0));
@@ -49,10 +49,10 @@ public class ContenedorRegistroHorarioTest {
     @Test
     public void testGetPorPosicion() {
         ContenedorRegistroHorario contenedor = new ContenedorRegistroHorario();
-        String entrada = "2020-03-04T05:06:00";
-        String salida = "2027-08-09T10:11:00";
+        String fechaHora = "2020-03-04T05:06:00";
+        String tipoEvento = RegistroHorario.TIPO_EVENTO_ENTRADA;
         RegistroHorario registro = new RegistroHorario(1, 101,
-                LocalDateTime.parse(entrada), LocalDateTime.parse(salida));
+                LocalDateTime.parse(fechaHora), tipoEvento);
         contenedor.add(registro);
         assertSame(registro, contenedor.getPorPosicion(0));
 
@@ -75,11 +75,14 @@ public class ContenedorRegistroHorarioTest {
     public void testGetPorIdPersona() {
         ContenedorRegistroHorario contenedor = new ContenedorRegistroHorario();
         RegistroHorario registro1 = new RegistroHorario(1, 101,
-                LocalDateTime.parse("2021-01-01T08:00"), LocalDateTime.parse("2021-01-01T16:00"));
+                LocalDateTime.parse("2021-01-01T08:00"),
+                RegistroHorario.TIPO_EVENTO_ENTRADA);
         RegistroHorario registro2 = new RegistroHorario(2, 101,
-                LocalDateTime.parse("2022-02-02T10:00"), LocalDateTime.parse("2022-02-02T17:00"));
+                LocalDateTime.parse("2022-02-02T10:00"),
+                RegistroHorario.TIPO_EVENTO_ENTRADA);
         RegistroHorario registro3 = new RegistroHorario(1, 101,
-                LocalDateTime.parse("2021-01-03T12:20"), LocalDateTime.parse("2024-11-10T21:00"));
+                LocalDateTime.parse("2021-01-03T12:20"),
+                RegistroHorario.TIPO_EVENTO_ENTRADA);
         contenedor.add(registro1);
         contenedor.add(registro2);
         contenedor.add(registro3);
@@ -109,22 +112,26 @@ public class ContenedorRegistroHorarioTest {
     }
 
     @Test
-    public void testGetObjetosOrdenadosFecha_Hora_Entrada() {
+    public void testGetObjetosOrdenados_fechaHora() {
         ContenedorRegistroHorario contenedor = new ContenedorRegistroHorario();
         RegistroHorario registro1 = new RegistroHorario(1, 101,
-                LocalDateTime.parse("2021-01-01T08:00"), LocalDateTime.parse("2021-01-01T16:00"));
+                LocalDateTime.parse("2021-01-01T08:00"),
+                RegistroHorario.TIPO_EVENTO_ENTRADA);
         RegistroHorario registro2 = new RegistroHorario(2, 101,
-                LocalDateTime.parse("2022-02-02T10:00"), LocalDateTime.parse("2022-02-02T17:00"));
+                LocalDateTime.parse("2022-02-02T10:00"),
+                RegistroHorario.TIPO_EVENTO_ENTRADA);
         RegistroHorario registro3 = new RegistroHorario(1, 101,
-                LocalDateTime.parse("2021-01-03T12:20"), LocalDateTime.parse("2024-11-10T21:00"));
+                LocalDateTime.parse("2021-01-03T12:20"),
+                RegistroHorario.TIPO_EVENTO_ENTRADA);
         RegistroHorario registro4 = new RegistroHorario(1, 101,
-                LocalDateTime.parse("2020-01-02T12:20"), LocalDateTime.parse("2024-11-10T21:00"));
+                LocalDateTime.parse("2020-01-02T12:20"),
+                RegistroHorario.TIPO_EVENTO_ENTRADA);
         contenedor.add(registro1);
         contenedor.add(registro2);
         contenedor.add(registro3);
         contenedor.add(registro4);
 
-        ContenedorRegistroHorario contenedorOrdenado = contenedor.getOrdenadosEntrada();
+        ContenedorRegistroHorario contenedorOrdenado = contenedor.getOrdenadosFechaHora();
         assertEquals(4, contenedorOrdenado.tamanio());
         assertSame(registro4, contenedorOrdenado.getPorPosicion(0));
         assertSame(registro1, contenedorOrdenado.getPorPosicion(1));
@@ -136,15 +143,16 @@ public class ContenedorRegistroHorarioTest {
     public void testToString() {
         ContenedorRegistroHorario contenedor = new ContenedorRegistroHorario();
         RegistroHorario registro1 = new RegistroHorario(1, 101,
-                LocalDateTime.parse("2021-01-01T08:00"), LocalDateTime.parse("2021-01-01T16:00"));
+                LocalDateTime.parse("2021-01-01T08:00"),
+                RegistroHorario.TIPO_EVENTO_ENTRADA);
         RegistroHorario registro2 = new RegistroHorario(2, 101,
-                LocalDateTime.parse("2022-02-02T10:00"), LocalDateTime.parse("2022-02-02T17:00"));
+                LocalDateTime.parse("2022-02-02T10:00"), RegistroHorario.TIPO_EVENTO_SALIDA);
         RegistroHorario registro3 = new RegistroHorario(1, 101,
                 LocalDateTime.of(2021, 1, 3, 12, 20),
-                LocalDateTime.of(2024, 11, 10, 21, 0));
+                RegistroHorario.TIPO_EVENTO_ENTRADA);
         RegistroHorario registro4 = new RegistroHorario(3, 102,
                 LocalDateTime.of(2020, 5, 7, 11, 12),
-                LocalDateTime.of(2022, 6, 7, 18, 0));
+                RegistroHorario.TIPO_EVENTO_SALIDA);
         contenedor.add(registro1);
         contenedor.add(registro2);
         contenedor.add(registro3);
@@ -152,10 +160,14 @@ public class ContenedorRegistroHorarioTest {
 
         String esperado = "{\n" +
                 "objetosContenidos = [\n" +
-                "{idPersona: 1, idEmpresa: 101, entrada: \"2021-01-01T08:00\", salida: \"2021-01-01T16:00\"},\n" +
-                "{idPersona: 2, idEmpresa: 101, entrada: \"2022-02-02T10:00\", salida: \"2022-02-02T17:00\"},\n" +
-                "{idPersona: 1, idEmpresa: 101, entrada: \"2021-01-03T12:20\", salida: \"2024-11-10T21:00\"},\n" +
-                "{idPersona: 3, idEmpresa: 102, entrada: \"2020-05-07T11:12\", salida: \"2022-06-07T18:00\"},\n" +
+                "{idPersona: 1, idEmpresa: 101, fechaHora: \"2021-01-01T08:00\", tipoEvento: \""
+                + RegistroHorario.TIPO_EVENTO_ENTRADA + "\"},\n" +
+                "{idPersona: 2, idEmpresa: 101, fechaHora: \"2022-02-02T10:00\", tipoEvento: \""
+                + RegistroHorario.TIPO_EVENTO_SALIDA + "\"},\n"
+                + "{idPersona: 1, idEmpresa: 101, fechaHora: \"2021-01-03T12:20\", tipoEvento: \""
+                + RegistroHorario.TIPO_EVENTO_ENTRADA + "\"},\n" +
+                "{idPersona: 3, idEmpresa: 102, fechaHora: \"2020-05-07T11:12\", tipoEvento: \""
+                + RegistroHorario.TIPO_EVENTO_SALIDA + "\"},\n" +
                 "]\n" +
                 "}";
         assertEquals(esperado, contenedor.toString());

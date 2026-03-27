@@ -68,7 +68,7 @@ public final class App {
                 "Opción " + opcion + ": Mostrar registros horarios de una persona ordenados cronológicamente\n");
         System.out.print("Indique el id de la persona: ");
         String idPersona = System.console().readLine();
-        ContenedorRegistroHorario listaOrdenada = registrosHorarios.getOrdenadosEntrada();
+        ContenedorRegistroHorario listaOrdenada = registrosHorarios.getOrdenadosFechaHora();
         boolean hayAlguno = false;
         for (int i = 0; i < listaOrdenada.tamanio(); ++i) {
             RegistroHorario registro = (RegistroHorario) listaOrdenada.getPorPosicion(i);

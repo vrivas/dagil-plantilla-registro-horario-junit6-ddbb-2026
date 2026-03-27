@@ -19,8 +19,8 @@ public class RegistroHorario {
     String tipoEvento;
 
     /// Constantes
-    final String TIPO_EVENTO_ENTRADA = "ENTRADA";
-    final String TIPO_EVENTO_SALIDA = "SALIDA";
+    final public static String TIPO_EVENTO_ENTRADA = "ENTRADA";
+    final public static String TIPO_EVENTO_SALIDA = "SALIDA";
 
     /**
     * Constructor parametrizado con fechas.
@@ -152,7 +152,7 @@ public class RegistroHorario {
      * @param r2 RegistroHorario con el que comparar
      * @return -1, si este registro es anterior; 0 si son iguales; y 1, si es posterior.
      */
-    public int comparaFechaYHora(final RegistroHorario r2) {
+    public int comparaFechaHora(final RegistroHorario r2) {
         return this.fechaHora.compareTo(r2.fechaHora);
     }
 }

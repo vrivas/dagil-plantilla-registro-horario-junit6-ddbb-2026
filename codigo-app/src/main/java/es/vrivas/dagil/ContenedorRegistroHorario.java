@@ -106,10 +106,10 @@ public class ContenedorRegistroHorario {
      * Devuelve un contenedor con el conjunto de objetos que hay ordenados cronológicamente por fecha y hora.
      * @return El conjunto de objetos ordenados cronológicamente por fecha y hora.
      */
-    public ContenedorRegistroHorario getOrdenadosEntrada() {
+    public ContenedorRegistroHorario getOrdenadosFechaHora() {
         ContenedorRegistroHorario toReturn = new ContenedorRegistroHorario();
         toReturn.objetosContenidos.addAll(objetosContenidos);
-        toReturn.objetosContenidos.sort((r1, r2) -> r1.comparaFechaYHora(r2));
+        toReturn.objetosContenidos.sort((r1, r2) -> r1.comparaFechaHora(r2));
         return toReturn;
     }
 
