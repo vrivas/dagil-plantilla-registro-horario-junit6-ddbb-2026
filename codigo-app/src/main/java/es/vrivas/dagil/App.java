@@ -124,6 +124,8 @@ public final class App {
         // Inicio datos de prueba de registros horarios leyendo desde la base de datos.
         try {
             registrosHorarios.leerDesdeBBDD();
+            System.out.println(
+                    "  El número de objetos leídos de la BBDD es: " + registrosHorarios.getNumObjetosContenidos());
         } catch (SQLException e) {
             System.out.println("Error al acceder a la base de datos: " + e.getMessage());
             return;
