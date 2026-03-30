@@ -4,7 +4,6 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import es.vrivas.dagil.Interfaces.ContenedorInterface;
 import es.vrivas.dagil.Plantillas.ContenedorPlantilla;
 import es.vrivas.dagil.Plantillas.ContenidoPlantilla;
 
