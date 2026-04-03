@@ -1,6 +1,5 @@
 package es.vrivas.dagil;
 
-import es.vrivas.dagil.App.CONF;
 import es.vrivas.dagil.Interfaces.ContenedorInterface;
 
 import java.sql.Connection;
