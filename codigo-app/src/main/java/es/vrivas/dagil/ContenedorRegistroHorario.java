@@ -58,14 +58,7 @@ public class ContenedorRegistroHorario implements ContenedorInterface<RegistroHo
         ContenedorRegistroHorario toReturn = new ContenedorRegistroHorario();
         for (int i = 0; i < objetosContenidos.size(); ++i) {
             if (objetosContenidos.get(i).getIdPersona() == idPersona) {
-                try {
-                    toReturn.add(objetosContenidos.get(i));
-                } catch (IllegalArgumentException e) {
-                    // No se añade el objeto al contenedor
-                    throw new IllegalArgumentException(
-                            "ContenedorRegistroHorario: getPorIdPersona: Error al añadir registro horario al conjunto de una persona: "
-                                    + e.getMessage());
-                }
+                toReturn.add(objetosContenidos.get(i));
             }
         }
         return toReturn;
@@ -137,17 +130,17 @@ public class ContenedorRegistroHorario implements ContenedorInterface<RegistroHo
      * Inserta en el contenedor los datos recogidos desde la base de datos.
      * @exception SQLException Si hay algún error al acceder a la base de datos.
      */
-    public void leerDesdeBBDD() throws SQLException {
+    public void leerDesdeBBDD(String jdbcDriver, String url, String dbUser, String password) throws SQLException {
         // Vacio el contenedor
         objetosContenidos.clear();
 
         // Código necesario para establecer la conexión con la base de datos usando JDBC
         try {
             // Cargar el driver
-            Class.forName(CONF.JDBC_DRIVER);
+            Class.forName(jdbcDriver);
 
             // Conectar con la base de datos
-            Connection conexion = DriverManager.getConnection(CONF.URL, CONF.DBUSER, CONF.PASSWORD);
+            Connection conexion = DriverManager.getConnection(url, dbUser, password);
 
             // Crear un objeto Statement (=sentencia) para realizar las consultas
             Statement statement = conexion.createStatement();

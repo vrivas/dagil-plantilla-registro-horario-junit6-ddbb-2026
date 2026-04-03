@@ -3,3 +3,4 @@ codigo-app/target/*
 codigo-app/target/*/*/*/*
 codigo-app/target/classes/es/vrivas/dagil/App.class
 .vscode/settings.json
+.DS_Store

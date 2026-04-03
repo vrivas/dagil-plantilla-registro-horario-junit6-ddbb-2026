@@ -106,6 +106,24 @@ Dado que este incremento solo constaba de una HU, una vez terminada de implement
 
 <sup>**Ilustración 5.** Estado del tablero Trello al terminar de desarrollar las HU del incremento 1.</sup>
 
+### Comprobación de los tests pasados y las pruebas de cobertura
+
+Las siguientes ilustraciones muestran el resumen de los tests que se han pasado (
+[ilustración 6](#ilustracion-test-incr-1)) así como de las pruebas de cobertura (
+[ilustración 7](#ilustracion-jacoco-incr-1)) realizadas con Jacoco.
+
+<anchor id="ilustracion-test-incr-1"/>
+
+![Resumen de los tests pasados en el incremento 1.](./assets/img/test-incr-1.png)
+
+<sup>**Ilustración 6.** Resumen de los tests pasados en el incremento 1.</sup>
+
+<anchor id="ilustracion-jacoco-incr-1"/>
+
+![Resumen de las pruebas de cobertura para el incremento 1.](./assets/img/jacoco-incr-1.png)
+
+<sup>**Ilustración 7.** Resumen de las pruebas de cobertura para el incremento 1.</sup>
+
 ## Incremento número 2.
 
 _Realiza la documentación del incremento número 2_.

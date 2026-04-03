@@ -2,8 +2,11 @@ package es.vrivas.dagil;
 
 import org.junit.jupiter.api.Test;
 
+import es.vrivas.dagil.App.CONF;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.sql.SQLException;
@@ -36,14 +39,47 @@ public class ContenedorRegistroHorarioTest {
         assertEquals(1, contenedor.getNumObjetosContenidos());
         assertSame(registro, contenedor.getPorPosicion(0));
 
-        // Compruebo la excepción si se intenta añadir un objeto que ya está en el
-        // contenedor
+        // Compruebo la excepción si se intenta añadir un objeto que ya está en el contenedor
         try {
             contenedor.add(registro);
             fail("Debería haber lanzado una excepción al intentar añadir un objeto que ya está en el contenedor");
         } catch (IllegalArgumentException e) {
             System.err.println("testAdd: Excepción capturada: " + e.getMessage());
         }
+    }
+
+    @Test
+    public void testRemove() {
+        // Compruebo la excepción si se intenta eliminar un objeto nulo
+        try {
+            ContenedorRegistroHorario contenedor = new ContenedorRegistroHorario();
+            contenedor.remove(null);
+            fail("Debería haber lanzado una excepción al intentar eliminar un objeto nulo");
+        } catch (IllegalArgumentException e) {
+            System.err.println("testAdd: Excepción capturada: " + e.getMessage());
+        }
+
+        // Compruebo la excepción si se intenta eliminar un objeto que no existe
+
+        ContenedorRegistroHorario contenedor = new ContenedorRegistroHorario();
+        String fechaHora = "2020-03-04T05:06:00";
+        String tipoEvento = RegistroHorario.TIPO_EVENTO_ENTRADA;
+
+        RegistroHorario registro = new RegistroHorario(1, 101,
+                LocalDateTime.parse(fechaHora), tipoEvento);
+
+        // Compruebo la excepción si se intenta añadir un objeto que ya está en el contenedor
+        try {
+            contenedor.remove(registro);
+            fail("Debería haber lanzado una excepción al intentar eliminar un objeto que no está en el contenedor");
+        } catch (IllegalArgumentException e) {
+            System.err.println("testAdd: Excepción capturada: " + e.getMessage());
+        }
+        // Compruebo que elimina bien un objeto que sí existe.
+        contenedor.add(registro);
+        assertEquals(1, contenedor.getNumObjetosContenidos());
+        contenedor.remove(registro);
+        assertEquals(0, contenedor.getNumObjetosContenidos());
     }
 
     @Test
@@ -177,9 +213,12 @@ public class ContenedorRegistroHorarioTest {
     public void testLeerDesdeBBDD() {
         try {
             ContenedorRegistroHorario contenedor = new ContenedorRegistroHorario();
-            contenedor.leerDesdeBBDD();
-            assert contenedor.getNumObjetosContenidos() > 0
-                    : "El contenedor debería tener registros después de leer desde la base de datos";
+            contenedor.leerDesdeBBDD(CONF.JDBC_DRIVER, CONF.URL, CONF.DBUSER, CONF.PASSWORD);
+            assertTrue(contenedor.getNumObjetosContenidos() > 0);
+
+            // Hago que salte la excepción)
+            contenedor.leerDesdeBBDD(CONF.JDBC_DRIVER, CONF.URL, CONF.DBUSER, CONF.PASSWORD + "patata");
+
         } catch (SQLException e) {
             System.err.println(
                     "SQLException: testLeerDesdeBBDD falló al leer registros horarios desde la base de datos: "

@@ -123,7 +123,7 @@ public final class App {
 
         // Inicio datos de prueba de registros horarios leyendo desde la base de datos.
         try {
-            registrosHorarios.leerDesdeBBDD();
+            registrosHorarios.leerDesdeBBDD(CONF.JDBC_DRIVER, CONF.URL, CONF.DBUSER, CONF.PASSWORD);
             System.out.println(
                     "  El número de objetos leídos de la BBDD es: " + registrosHorarios.getNumObjetosContenidos());
         } catch (SQLException e) {
